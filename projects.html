@@ -1,0 +1,125 @@
+<!-- projects.html (8. Saved Analysis Projects with Dynamic Custom Ingestions & Reports) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SatQuery AI – 8. Saved Analysis Projects</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #070913; color: #f1f5f9; font-family: system-ui, sans-serif; user-select: none; }
+    .panel-glass { background: rgba(13, 17, 33, 0.95); backdrop-filter: blur(14px); border: 1px solid rgba(59, 130, 246, 0.15); }
+    .sidebar-btn { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.85rem; border-radius: 0.75rem; font-size: 0.75rem; color: #94a3b8; text-decoration: none; width: 100%; text-align: left; transition: all 0.2s ease; }
+    .sidebar-btn:hover { background: rgba(15, 23, 42, 0.8); color: #f1f5f9; }
+    .sidebar-btn.active { background: rgba(59, 130, 246, 0.25); color: #60a5fa; border-left: 3px solid #3b82f6; font-weight: 600; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+  </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden text-slate-200 bg-[#070913]">
+  
+  <!-- Top Navigation Bar -->
+  <header class="h-14 border-b border-slate-800/80 bg-[#070913] px-5 flex items-center justify-between shrink-0 text-xs z-20">
+    <div class="flex items-center gap-3">
+      <span class="text-xl">🛰️</span>
+      <span class="font-bold text-white text-sm">8. Saved Analysis Projects</span>
+    </div>
+    <a href="workspace.html" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-all cursor-pointer">Workspace ➜</a>
+  </header>
+
+  <!-- Main App Layout with Sidebar Navigation -->
+  <div class="flex flex-1 overflow-hidden">
+    
+    <!-- Unified Sidebar Navigation Drawer -->
+    <aside class="w-64 border-r border-slate-800/80 bg-slate-950 p-4 space-y-1 text-xs shrink-0 flex flex-col justify-between overflow-y-auto">
+      <div class="space-y-1">
+        <div class="px-3 py-2 text-[10px] uppercase font-bold text-slate-500 tracking-wider">NAVIGATION</div>
+        <a href="index.html" class="sidebar-btn">🏠 Dashboard</a>
+        <a href="workspace.html" class="sidebar-btn">✨ New Analysis</a>
+        <a href="map_explorer.html" class="sidebar-btn">🗺️ Map Explorer</a>
+        <a href="insights.html" class="sidebar-btn">📈 Analytics</a>
+        <a href="history.html" class="sidebar-btn">🕒 History</a>
+        <a href="projects.html" class="sidebar-btn active">📁 Saved Analysis</a>
+        <a href="upload.html" class="sidebar-btn">📤 Image Ingestion</a>
+        <a href="change_detection.html" class="sidebar-btn">🔄 Change Detection</a>
+        <a href="report.html" class="sidebar-btn">📑 AI Report Page</a>
+        <a href="talk_satellite.html" class="sidebar-btn">🤖 Talk to Satellite</a>
+      </div>
+      <div class="pt-3 border-t border-slate-800 space-y-1 text-slate-400">
+        <a href="report.html" class="sidebar-btn">❓ Help</a>
+        <a href="index.html" class="sidebar-btn text-rose-400 hover:bg-rose-950/30">🚪 Logout</a>
+      </div>
+    </aside>
+
+    <!-- Content Workspace Area with Saved Projects -->
+    <main class="flex-1 p-6 flex flex-col max-w-4xl mx-auto w-full overflow-y-auto space-y-4">
+      <div class="font-bold text-white text-xs mb-1">Archived Projects & Ingested Rasters</div>
+      
+      <div id="projects-list" class="grid grid-cols-2 gap-4">
+        
+        <!-- Default Saved Project 1 -->
+        <div class="panel-glass rounded-2xl p-4 border border-slate-800/80 space-y-3 flex flex-col justify-between">
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-white text-xs">Mumbai Suburban Urbanization</span>
+              <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30">Verified</span>
+            </div>
+            <p class="text-[11px] text-slate-400">Bi-temporal structural expansion analysis across Western Express Highway corridors.</p>
+          </div>
+          <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-[10px]">
+            <span class="text-slate-500">28 Aug 2026</span>
+            <a href="workspace.html" class="text-blue-400 hover:underline font-semibold">Open Project ➜</a>
+          </div>
+        </div>
+
+        <!-- Default Saved Project 2 -->
+        <div class="panel-glass rounded-2xl p-4 border border-slate-800/80 space-y-3 flex flex-col justify-between">
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-white text-xs">Coastal Inundation Basin Scan</span>
+              <span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded border border-blue-500/30">Active</span>
+            </div>
+            <p class="text-[11px] text-slate-400">Water body contraction and tidal boundary shift monitoring in tidal zones.</p>
+          </div>
+          <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-[10px]">
+            <span class="text-slate-500">25 Aug 2026</span>
+            <a href="workspace.html" class="text-blue-400 hover:underline font-semibold">Open Project ➜</a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    // Dynamically inject custom uploaded image into saved projects archive
+    window.addEventListener('DOMContentLoaded', () => {
+      const isCustom = localStorage.getItem("isCustomUpload");
+      const imageName = localStorage.getItem("uploadedImageName");
+      const imageDate = localStorage.getItem("uploadedImageDate") || "Today";
+      const imageSize = localStorage.getItem("uploadedImageSize") || "10 m/pixel";
+
+      if (isCustom === "true" && imageName) {
+        const projectsList = document.getElementById('projects-list');
+        
+        const customProjectCard = document.createElement('div');
+        customProjectCard.className = "panel-glass rounded-2xl p-4 border border-blue-500/40 space-y-3 flex flex-col justify-between shadow-lg";
+        customProjectCard.innerHTML = `
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-white text-xs truncate max-w-[200px]">📁 ${imageName}</span>
+              <span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded border border-blue-500/30">Custom Ingestion</span>
+            </div>
+            <p class="text-[11px] text-slate-400">Successfully ingested raster dataset (${imageSize}). Neural spatial boundaries active.</p>
+          </div>
+          <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-[10px]">
+            <span class="text-slate-500">${imageDate}</span>
+            <a href="workspace.html" class="text-blue-400 hover:underline font-semibold">Open Workspace ➜</a>
+          </div>
+        `;
+        projectsList.prepend(customProjectCard);
+      }
+    });
+  </script>
+</body>
+</html>

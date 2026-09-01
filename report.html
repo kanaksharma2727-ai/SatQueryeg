@@ -1,0 +1,155 @@
+<!-- report.html (9. Comprehensive AI Report Dossier with Dynamic Uploaded Image Metadata Integration) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SatQuery AI – 9. AI Report Dossier</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #070913; color: #f1f5f9; font-family: system-ui, sans-serif; user-select: none; }
+    .panel-glass { background: rgba(13, 17, 33, 0.95); backdrop-filter: blur(14px); border: 1px solid rgba(59, 130, 246, 0.15); }
+    .sidebar-btn { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.85rem; border-radius: 0.75rem; font-size: 0.75rem; color: #94a3b8; text-decoration: none; width: 100%; text-align: left; transition: all 0.2s ease; }
+    .sidebar-btn:hover { background: rgba(15, 23, 42, 0.8); color: #f1f5f9; }
+    .sidebar-btn.active { background: rgba(59, 130, 246, 0.25); color: #60a5fa; border-left: 3px solid #3b82f6; font-weight: 600; }
+    @media print {
+      body { background-color: #ffffff !important; color: #000000 !important; }
+      .panel-glass { background: #ffffff !important; border: 1px solid #cbd5e1 !important; color: #000000 !important; }
+      aside, header button, .no-print { display: none !important; }
+      main { padding: 0 !important; }
+    }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+  </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden text-slate-200 bg-[#070913]">
+  
+  <!-- Top Navigation Bar -->
+  <header class="h-14 border-b border-slate-800/80 bg-[#070913] px-5 flex items-center justify-between shrink-0 text-xs z-20">
+    <div class="flex items-center gap-3">
+      <span class="text-xl">🛰️</span>
+      <span class="font-bold text-white text-sm">9. AI Report Dossier & Print Export</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <button onclick="window.print()" class="px-4 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 rounded-xl text-xs font-bold transition-all cursor-pointer no-print">🖨️ Print Dossier</button>
+      <a href="workspace.html" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-all cursor-pointer no-print">Workspace ➜</a>
+    </div>
+  </header>
+
+  <!-- Main App Layout with Sidebar Navigation -->
+  <div class="flex flex-1 overflow-hidden">
+    
+    <!-- Unified Sidebar Navigation Drawer -->
+    <aside class="w-64 border-r border-slate-800/80 bg-slate-950 p-4 space-y-1 text-xs shrink-0 flex flex-col justify-between overflow-y-auto no-print">
+      <div class="space-y-1">
+        <div class="px-3 py-2 text-[10px] uppercase font-bold text-slate-500 tracking-wider">NAVIGATION</div>
+        <a href="index.html" class="sidebar-btn">🏠 Dashboard</a>
+        <a href="workspace.html" class="sidebar-btn">✨ New Analysis</a>
+        <a href="map_explorer.html" class="sidebar-btn">🗺️ Map Explorer</a>
+        <a href="insights.html" class="sidebar-btn">📈 Analytics</a>
+        <a href="history.html" class="sidebar-btn">🕒 History</a>
+        <a href="projects.html" class="sidebar-btn">📁 Saved Analysis</a>
+        <a href="upload.html" class="sidebar-btn">📤 Image Ingestion</a>
+        <a href="change_detection.html" class="sidebar-btn">🔄 Change Detection</a>
+        <a href="report.html" class="sidebar-btn active">📑 AI Report Page</a>
+        <a href="talk_satellite.html" class="sidebar-btn">🤖 Talk to Satellite</a>
+      </div>
+      <div class="pt-3 border-t border-slate-800 space-y-1 text-slate-400">
+        <a href="report.html" class="sidebar-btn">❓ Help</a>
+        <a href="index.html" class="sidebar-btn text-rose-400 hover:bg-rose-950/30">🚪 Logout</a>
+      </div>
+    </aside>
+
+    <!-- Content Workspace Area with Full Report Dossier -->
+    <main class="flex-1 p-6 flex flex-col max-w-4xl mx-auto w-full overflow-y-auto space-y-5">
+      
+      <!-- Report Header Card -->
+      <div class="panel-glass rounded-2xl p-6 border border-slate-800/80 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800/60 pb-4">
+          <div>
+            <h1 class="font-bold text-white text-base">SatQuery AI – Executive Spatial Intelligence Report</h1>
+            <p class="text-[11px] text-slate-400 mt-0.5">Automated Neural Vision & Land-Use Change Diagnostic Assessment</p>
+          </div>
+          <span class="text-xs bg-blue-600/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-xl font-bold">Status: Verified</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 text-xs">
+          <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-xl space-y-1">
+            <div class="text-[10px] text-slate-400">Target Region / Ingestion Source</div>
+            <div id="report-source" class="font-bold text-white">Sentinel-2 Multispectral Feed (Mumbai, India)</div>
+          </div>
+          <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-xl space-y-1">
+            <div class="text-[10px] text-slate-400">Assessment Timestamp</div>
+            <div id="report-date" class="font-bold text-white">28 Aug 2026 • 10:30 IST</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Uploaded Image Preview & Ingestion Card (Dynamic) -->
+      <div id="image-dossier-card" class="panel-glass rounded-2xl p-6 border border-slate-800/80 space-y-3 hidden">
+        <div class="font-bold text-white text-xs border-b border-slate-800/60 pb-2">🖼️ Ingested Raster Metadata & Preview</div>
+        <div class="grid grid-cols-12 gap-4 items-center">
+          <div class="col-span-4">
+            <img id="report-img-thumb" class="w-full h-32 object-cover rounded-xl border border-slate-700" />
+          </div>
+          <div class="col-span-8 space-y-2 text-xs">
+            <div class="flex justify-between p-2 bg-slate-900/60 border border-slate-800 rounded-lg">
+              <span class="text-slate-400">File Name:</span>
+              <span id="report-file-name" class="font-bold text-blue-400"></span>
+            </div>
+            <div class="flex justify-between p-2 bg-slate-900/60 border border-slate-800 rounded-lg">
+              <span class="text-slate-400">File Size:</span>
+              <span id="report-file-size" class="font-bold text-white"></span>
+            </div>
+            <div class="flex justify-between p-2 bg-slate-900/60 border border-slate-800 rounded-lg">
+              <span class="text-slate-400">Resolution & Zoning:</span>
+              <span class="font-bold text-emerald-400">5 m/pixel (Multi-Class Bounded)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Findings Summary -->
+      <div class="panel-glass rounded-2xl p-6 border border-slate-800/80 space-y-3">
+        <div class="font-bold text-white text-xs border-b border-slate-800/60 pb-2">📊 Diagnostic Breakdown & Key Detections</div>
+        <div class="space-y-2 text-xs text-slate-300">
+          <div class="flex items-start gap-2.5 p-2.5 bg-slate-900/60 border border-slate-800 rounded-xl">
+            <span class="text-rose-400 font-bold">🏢</span>
+            <div><span class="font-bold text-white">23 New Structural Foundations:</span> Urban expansion documented across Zone C with high structural index confidence.</div>
+          </div>
+          <div class="flex items-start gap-2.5 p-2.5 bg-slate-900/60 border border-slate-800 rounded-xl">
+            <span class="text-emerald-400 font-bold">🌿</span>
+            <div><span class="font-bold text-white">14% Vegetation Canopy Reduction:</span> NDVI index confirms depletion along suburban corridors.</div>
+          </div>
+          <div class="flex items-start gap-2.5 p-2.5 bg-slate-900/60 border border-slate-800 rounded-xl">
+            <span class="text-blue-400 font-bold">🌊</span>
+            <div><span class="font-bold text-white">Water Body Basin Shifts:</span> Inundation mapping calculates 18.4 km² active basin alterations.</div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <script>
+    // Automatically populate dossier with custom uploaded image data if available
+    window.addEventListener('DOMContentLoaded', () => {
+      const isCustom = localStorage.getItem("isCustomUpload");
+      const imageName = localStorage.getItem("uploadedImageName");
+      const imageSize = localStorage.getItem("uploadedImageSize");
+      const imageBase64 = localStorage.getItem("uploadedImageBase64");
+
+      if (isCustom === "true" && imageName) {
+        document.getElementById('report-source').textContent = `Custom Uploaded Raster (${imageName})`;
+        document.getElementById('image-dossier-card').classList.remove('hidden');
+        document.getElementById('report-file-name').textContent = imageName;
+        document.getElementById('report-file-size').textContent = imageSize || "Standard Raster";
+        
+        if (imageBase64) {
+          document.getElementById('report-img-thumb').src = imageBase64;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!-- insights.html (5. AI Insights Dashboard with Live Uploaded Image Statistics & Charts) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SatQuery AI – 5. AI Insights Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    body { background-color: #070913; color: #f1f5f9; font-family: system-ui, sans-serif; user-select: none; }
+    .panel-glass { background: rgba(13, 17, 33, 0.95); backdrop-filter: blur(14px); border: 1px solid rgba(59, 130, 246, 0.15); }
+    .sidebar-btn { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.85rem; border-radius: 0.75rem; font-size: 0.75rem; color: #94a3b8; text-decoration: none; width: 100%; text-align: left; transition: all 0.2s ease; }
+    .sidebar-btn:hover { background: rgba(15, 23, 42, 0.8); color: #f1f5f9; }
+    .sidebar-btn.active { background: rgba(59, 130, 246, 0.25); color: #60a5fa; border-left: 3px solid #3b82f6; font-weight: 600; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+  </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden text-slate-200 bg-[#070913]">
+  
+  <!-- Top Navigation Bar -->
+  <header class="h-14 border-b border-slate-800/80 bg-[#070913] px-5 flex items-center justify-between shrink-0 text-xs z-20">
+    <div class="flex items-center gap-3">
+      <span class="text-xl">🛰️</span>
+      <span class="font-bold text-white text-sm">5. AI Insights Dashboard</span>
+      <span id="active-badge" class="ml-2 text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded border border-blue-500/30">Default Region Analysis</span>
+    </div>
+    <a href="workspace.html" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-all cursor-pointer">Workspace ➜</a>
+  </header>
+
+  <!-- Main App Layout with Sidebar Navigation -->
+  <div class="flex flex-1 overflow-hidden">
+    
+    <!-- Unified Sidebar Navigation Drawer -->
+    <aside class="w-64 border-r border-slate-800/80 bg-slate-950 p-4 space-y-1 text-xs shrink-0 flex flex-col justify-between overflow-y-auto">
+      <div class="space-y-1">
+        <div class="px-3 py-2 text-[10px] uppercase font-bold text-slate-500 tracking-wider">NAVIGATION</div>
+        <a href="index.html" class="sidebar-btn">🏠 Dashboard</a>
+        <a href="workspace.html" class="sidebar-btn">✨ New Analysis</a>
+        <a href="map_explorer.html" class="sidebar-btn">🗺️ Map Explorer</a>
+        <a href="insights.html" class="sidebar-btn active">📈 Analytics</a>
+        <a href="history.html" class="sidebar-btn">🕒 History</a>
+        <a href="projects.html" class="sidebar-btn">📁 Saved Analysis</a>
+        <a href="upload.html" class="sidebar-btn">📤 Image Ingestion</a>
+        <a href="change_detection.html" class="sidebar-btn">🔄 Change Detection</a>
+        <a href="report.html" class="sidebar-btn">📑 AI Report Page</a>
+        <a href="talk_satellite.html" class="sidebar-btn">🤖 Talk to Satellite</a>
+      </div>
+      <div class="pt-3 border-t border-slate-800 space-y-1 text-slate-400">
+        <a href="report.html" class="sidebar-btn">❓ Help</a>
+        <a href="index.html" class="sidebar-btn text-rose-400 hover:bg-rose-950/30">🚪 Logout</a>
+      </div>
+    </aside>
+
+    <!-- Content Workspace Area with Charts -->
+    <main class="flex-1 p-6 grid grid-cols-12 gap-5 overflow-y-auto">
+      
+      <!-- Left Donut Chart: Land Cover Breakdown -->
+      <div class="col-span-6 flex flex-col panel-glass rounded-2xl p-6 border border-slate-800/80 justify-between">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800/60">
+          <div class="font-bold text-white text-xs">Land Cover Distribution</div>
+          <div class="flex items-center gap-3 text-[10px] text-slate-400">
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-[#10b981]"></span> Veg</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-[#f59e0b]"></span> Built-up</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-[#06b6d4]"></span> Water</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-[#64748b]"></span> Bare</span>
+          </div>
+        </div>
+        
+        <div class="relative w-full h-[300px] flex items-center justify-center my-4">
+          <canvas id="landCoverChart"></canvas>
+        </div>
+
+        <div id="land-cover-desc" class="text-[11px] text-slate-400 text-center bg-slate-900/60 p-2.5 rounded-xl border border-slate-800/80">
+          Normalized Difference Vegetation Index (NDVI) indicates dominant green canopy with moderate urban footprint.
+        </div>
+      </div>
+
+      <!-- Right Line Chart: Urban Growth Trend -->
+      <div class="col-span-6 flex flex-col panel-glass rounded-2xl p-6 border border-slate-800/80 justify-between">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800/60">
+          <div class="font-bold text-white text-xs">Urban Trend (2022 - 2026)</div>
+          <span class="text-[10px] bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded-md border border-amber-500/30">Built-up Expansion</span>
+        </div>
+
+        <div class="relative w-full h-[300px] flex items-center justify-center my-4">
+          <canvas id="urbanTrendChart"></canvas>
+        </div>
+
+        <div id="urban-trend-desc" class="text-[11px] text-slate-400 text-center bg-slate-900/60 p-2.5 rounded-xl border border-slate-800/80">
+          Consistent upward trajectory in built-up area index showing +42% growth from 2022 benchmark.
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <script>
+    // Check if user uploaded a custom image and adapt chart data accordingly
+    const isCustom = localStorage.getItem("isCustomUpload");
+    const imageName = localStorage.getItem("uploadedImageName");
+
+    let landCoverData = [48, 27, 15, 10]; // Default: Veg, Built-up, Water, Bare
+    let urbanTrendData = [15, 22, 34, 48, 62]; // 2022 to 2026
+
+    if (isCustom === "true" && imageName) {
+      document.getElementById('active-badge').textContent = `Analyzed File: ${imageName}`;
+      // Modify metrics slightly for custom uploaded image simulation
+      landCoverData = [35, 42, 12, 11];
+      urbanTrendData = [18, 28, 40, 55, 71];
+      document.getElementById('land-cover-desc').textContent = `Spectral classification for ingested raster '${imageName}' highlights heightened built-up density.`;
+      document.getElementById('urban-trend-desc').textContent = `Historical regression for '${imageName}' tracks accelerated structural development through 2026.`;
+    }
+
+    // Render Land Cover Donut Chart
+    const ctxPie = document.getElementById('landCoverChart').getContext('2d');
+    new Chart(ctxPie, {
+      type: 'doughnut',
+      data: {
+        labels: ['Veg', 'Built-up', 'Water', 'Bare'],
+        datasets: [{
+          data: landCoverData,
+          backgroundColor: ['#10b981', '#f59e0b', '#06b6d4', '#64748b'],
+          borderWidth: 0,
+          cutout: '68%'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+
+    // Render Urban Trend Line Chart
+    const ctxLine = document.getElementById('urbanTrendChart').getContext('2d');
+    new Chart(ctxLine, {
+      type: 'line',
+      data: {
+        labels: ['2022', '2023', '2024', '2025', '2026'],
+        datasets: [{
+          label: 'Built-up Index',
+          data: urbanTrendData,
+          borderColor: '#f59e0b',
+          backgroundColor: 'rgba(245, 158, 11, 0.1)',
+          fill: true,
+          tension: 0.35,
+          borderWidth: 3,
+          pointBackgroundColor: '#f59e0b',
+          pointRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#94a3b8', font: { size: 10 } } },
+          y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

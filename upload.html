@@ -1,0 +1,174 @@
+<!-- upload.html (4. Image Ingestion with Fully Dynamic Image Information Overlay) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SatQuery AI – 4. Image Ingestion & Analysis</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #070913; color: #f1f5f9; font-family: system-ui, sans-serif; user-select: none; }
+    .panel-glass { background: rgba(13, 17, 33, 0.95); backdrop-filter: blur(14px); border: 1px solid rgba(59, 130, 246, 0.15); }
+    .sidebar-btn { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.85rem; border-radius: 0.75rem; font-size: 0.75rem; color: #94a3b8; text-decoration: none; width: 100%; text-align: left; transition: all 0.2s ease; }
+    .sidebar-btn:hover { background: rgba(15, 23, 42, 0.8); color: #f1f5f9; }
+    .sidebar-btn.active { background: rgba(59, 130, 246, 0.25); color: #60a5fa; border-left: 3px solid #3b82f6; font-weight: 600; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+  </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden text-slate-200 bg-[#070913]">
+  
+  <!-- Top Navigation Bar -->
+  <header class="h-14 border-b border-slate-800/80 bg-[#070913] px-5 flex items-center justify-between shrink-0 text-xs z-20">
+    <div class="flex items-center gap-3">
+      <span class="text-xl">🛰️</span>
+      <span class="font-bold text-white text-sm">SatQuery AI</span>
+    </div>
+    <a href="workspace.html" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-all cursor-pointer">Open Workspace ➜</a>
+  </header>
+
+  <!-- Main App Layout with Sidebar Navigation -->
+  <div class="flex flex-1 overflow-hidden">
+    
+    <!-- Unified Sidebar Navigation Drawer -->
+    <aside class="w-64 border-r border-slate-800/80 bg-slate-950 p-4 space-y-1 text-xs shrink-0 flex flex-col justify-between overflow-y-auto">
+      <div class="space-y-1">
+        <div class="px-3 py-2 text-[10px] uppercase font-bold text-slate-500 tracking-wider">NAVIGATION</div>
+        <a href="index.html" class="sidebar-btn">🏠 Dashboard</a>
+        <a href="workspace.html" class="sidebar-btn">✨ New Analysis</a>
+        <a href="map_explorer.html" class="sidebar-btn">🗺️ Map Explorer</a>
+        <a href="insights.html" class="sidebar-btn">📈 Analytics</a>
+        <a href="history.html" class="sidebar-btn">🕒 History</a>
+        <a href="projects.html" class="sidebar-btn">📁 Saved Analysis</a>
+        <a href="upload.html" class="sidebar-btn active">📤 Image Ingestion</a>
+        <a href="change_detection.html" class="sidebar-btn">🔄 Change Detection</a>
+        <a href="report.html" class="sidebar-btn">📑 AI Report Page</a>
+        <a href="talk_satellite.html" class="sidebar-btn">🤖 Talk to Satellite</a>
+      </div>
+      <div class="pt-3 border-t border-slate-800 space-y-1 text-slate-400">
+        <a href="report.html" class="sidebar-btn">❓ Help</a>
+        <a href="index.html" class="sidebar-btn text-rose-400 hover:bg-rose-950/30">🚪 Logout</a>
+      </div>
+    </aside>
+
+    <!-- Content Workspace Area -->
+    <main class="flex-1 p-6 grid grid-cols-12 gap-5 overflow-y-auto">
+      
+      <!-- Left Upload Dropzone Box -->
+      <div class="col-span-7 flex flex-col panel-glass rounded-2xl p-6 border border-slate-800/80 justify-between">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800/60">
+          <div class="font-bold text-white text-xs flex items-center gap-2"><span>📤</span> Drop Satellite Image</div>
+          <span class="text-[10px] text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded-md border border-blue-500/20">PNG, JPG, GeoTIFF</span>
+        </div>
+
+        <div onclick="document.getElementById('file-in').click()" id="dropzone" class="border-2 border-dashed border-slate-700 hover:border-blue-500 rounded-2xl p-8 text-center bg-slate-900/50 cursor-pointer my-6 transition-all flex flex-col items-center justify-center relative overflow-hidden min-h-[220px]">
+          <input type="file" id="file-in" class="hidden" accept="image/*" onchange="handleFileSelect(event)" />
+          <div id="upload-icon" class="text-4xl mb-3">🌐</div>
+          <div id="drop-text" class="text-xs font-bold text-white">Drag & drop satellite raster image here</div>
+          <div id="status" class="text-[11px] text-slate-400 mt-2">Ready for ingestion & neural spatial feature extraction</div>
+          <img id="image-preview" class="absolute inset-0 w-full h-full object-cover hidden rounded-xl opacity-90" />
+        </div>
+
+        <div class="space-y-2">
+          <div class="text-[11px] font-bold text-slate-300">AI Analysis Toolsets:</div>
+          <div class="grid grid-cols-3 gap-2 text-[10px]">
+            <div class="p-2 bg-slate-900 border border-slate-800 rounded-xl text-center text-slate-300">🏢 Object Detection</div>
+            <div class="p-2 bg-slate-900 border border-slate-800 rounded-xl text-center text-slate-300">🌿 Vegetation Analysis</div>
+            <div class="p-2 bg-slate-900 border border-slate-800 rounded-xl text-center text-slate-300">🌊 Water Detection</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Dynamic Image Information Panel -->
+      <div class="col-span-5 flex flex-col panel-glass rounded-2xl p-6 border border-slate-800/80 space-y-4">
+        <div class="font-bold text-white text-xs border-b border-slate-800/60 pb-3 flex items-center justify-between">
+          <span>📋 Image Information</span>
+          <span id="badge-status" class="text-[10px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded border border-amber-500/30">Awaiting Upload</span>
+        </div>
+        
+        <div class="space-y-2.5 text-xs">
+          <div class="flex justify-between p-2.5 bg-slate-900/80 border border-slate-800 rounded-xl items-center">
+            <span class="text-slate-400">Source Type</span>
+            <span id="info-source" class="font-semibold text-white">Default Sentinel-2</span>
+          </div>
+          <div class="flex justify-between p-2.5 bg-slate-900/80 border border-slate-800 rounded-xl items-center">
+            <span class="text-slate-400">File Name</span>
+            <span id="info-name" class="font-semibold text-blue-400 truncate max-w-[170px]">None</span>
+          </div>
+          <div class="flex justify-between p-2.5 bg-slate-900/80 border border-slate-800 rounded-xl items-center">
+            <span class="text-slate-400">File Size</span>
+            <span id="info-size" class="font-semibold text-white">0.0 KB</span>
+          </div>
+          <div class="flex justify-between p-2.5 bg-slate-900/80 border border-slate-800 rounded-xl items-center">
+            <span class="text-slate-400">Spatial Resolution</span>
+            <span id="info-resolution" class="font-semibold text-white">10 m/pixel</span>
+          </div>
+          <div class="flex justify-between p-2.5 bg-slate-900/80 border border-slate-800 rounded-xl items-center">
+            <span class="text-slate-400">Target Coordinates</span>
+            <span id="info-coords" class="font-semibold text-white">19.0760° N, 72.8777° E</span>
+          </div>
+          <div class="flex justify-between p-2.5 bg-slate-900/80 border border-slate-800 rounded-xl items-center">
+            <span class="text-slate-400">Acquisition Date</span>
+            <span id="info-date" class="font-semibold text-white">28 Aug 2026</span>
+          </div>
+          <div class="flex justify-between p-2.5 bg-slate-900/80 border border-slate-800 rounded-xl items-center">
+            <span class="text-slate-400">Spectral Bands</span>
+            <span id="info-bands" class="font-semibold text-white">13 Multispectral</span>
+          </div>
+          <div class="flex justify-between p-2.5 bg-slate-900/80 border border-slate-800 rounded-xl items-center">
+            <span class="text-slate-400">Cloud Cover</span>
+            <span id="info-cloud" class="font-semibold text-emerald-400">2.1% (Optimal)</span>
+          </div>
+        </div>
+
+        <button onclick="window.location.href='workspace.html'" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs transition-all cursor-pointer shadow-lg mt-auto">
+          🚀 Run Full AI Analysis Workspace ➜
+        </button>
+      </div>
+
+    </main>
+
+  </div>
+
+  <script>
+    function handleFileSelect(e) {
+      const file = e.target.files[0]; 
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const preview = document.getElementById('image-preview');
+        preview.src = event.target.result;
+        preview.classList.remove('hidden');
+        document.getElementById('upload-icon').style.display = 'none';
+        document.getElementById('drop-text').style.display = 'none';
+
+        localStorage.setItem("uploadedImageBase64", event.target.result);
+      };
+      reader.readAsDataURL(file);
+
+      const fileSizeKB = (file.size / 1024).toFixed(1) + " KB";
+      const todayDate = new Date().toISOString().split('T')[0];
+
+      // Dynamically update UI info values based on the inserted file
+      document.getElementById('badge-status').textContent = "Custom Ingested";
+      document.getElementById('badge-status').className = "text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30";
+      
+      document.getElementById('info-source').textContent = file.name.endsWith('.tif') || file.name.endsWith('.tiff') ? "GeoTIFF Raster" : "Custom Raster Image";
+      document.getElementById('info-name').textContent = file.name;
+      document.getElementById('info-size').textContent = fileSizeKB;
+      document.getElementById('info-resolution').textContent = "5 m/pixel (Super-Res)";
+      document.getElementById('info-coords').textContent = "19.0760° N, 72.8777° E (Geo-tagged)";
+      document.getElementById('info-date').textContent = todayDate;
+      document.getElementById('info-bands').textContent = file.name.endsWith('.tif') ? "16 Multispectral Bands" : "RGB True Color Space";
+      document.getElementById('info-cloud').textContent = "0.0% (Clear Sky)";
+      document.getElementById('status').textContent = "Successfully loaded & verified.";
+
+      // Sync state for workspace
+      localStorage.setItem("uploadedImageName", file.name);
+      localStorage.setItem("uploadedImageSize", fileSizeKB);
+      localStorage.setItem("uploadedImageDate", todayDate);
+      localStorage.setItem("isCustomUpload", "true");
+    }
+  </script>
+</body>
+</html>

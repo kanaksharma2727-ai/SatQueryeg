@@ -1,0 +1,180 @@
+<!-- talk_satellite.html (10. Talk to Satellite - Direct Map Hydro-Zoning & Zoom Agent) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SatQuery AI – 10. Talk to Satellite</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #070913; color: #f1f5f9; font-family: system-ui, sans-serif; user-select: none; }
+    .panel-glass { background: rgba(13, 17, 33, 0.95); backdrop-filter: blur(14px); border: 1px solid rgba(59, 130, 246, 0.15); }
+    .sidebar-btn { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.85rem; border-radius: 0.75rem; font-size: 0.75rem; color: #94a3b8; text-decoration: none; width: 100%; text-align: left; transition: all 0.2s ease; }
+    .sidebar-btn:hover { background: rgba(15, 23, 42, 0.8); color: #f1f5f9; }
+    .sidebar-btn.active { background: rgba(59, 130, 246, 0.25); color: #60a5fa; border-left: 3px solid #3b82f6; font-weight: 600; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+  </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden text-slate-200 bg-[#070913]">
+  
+  <!-- Top Navigation Bar -->
+  <header class="h-14 border-b border-slate-800/80 bg-[#070913] px-5 flex items-center justify-between shrink-0 text-xs z-20">
+    <div class="flex items-center gap-3">
+      <span class="text-xl">🛰️</span>
+      <span class="font-bold text-white text-sm">SatQuery AI</span>
+    </div>
+    <a href="workspace.html" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-all cursor-pointer">Workspace ➜</a>
+  </header>
+
+  <!-- Main App Layout with Sidebar Navigation -->
+  <div class="flex flex-1 overflow-hidden">
+    
+    <!-- Unified Sidebar Navigation Drawer -->
+    <aside class="w-64 border-r border-slate-800/80 bg-slate-950 p-4 space-y-1 text-xs shrink-0 flex flex-col justify-between overflow-y-auto">
+      <div class="space-y-1">
+        <div class="px-3 py-2 text-[10px] uppercase font-bold text-slate-500 tracking-wider">NAVIGATION</div>
+        <a href="index.html" class="sidebar-btn">🏠 Dashboard</a>
+        <a href="workspace.html" class="sidebar-btn">✨ New Analysis</a>
+        <a href="map_explorer.html" class="sidebar-btn">🗺️ Map Explorer</a>
+        <a href="insights.html" class="sidebar-btn">📈 Analytics</a>
+        <a href="history.html" class="sidebar-btn">🕒 History</a>
+        <a href="projects.html" class="sidebar-btn">📁 Saved Analysis</a>
+        <a href="upload.html" class="sidebar-btn">📤 Image Ingestion</a>
+        <a href="change_detection.html" class="sidebar-btn">🔄 Change Detection</a>
+        <a href="report.html" class="sidebar-btn">📑 AI Report Page</a>
+        <a href="talk_satellite.html" class="sidebar-btn active">🤖 Talk to Satellite</a>
+      </div>
+      <div class="pt-3 border-t border-slate-800 space-y-1 text-slate-400">
+        <a href="report.html" class="sidebar-btn">❓ Help</a>
+        <a href="index.html" class="sidebar-btn text-rose-400 hover:bg-rose-950/30">🚪 Logout</a>
+      </div>
+    </aside>
+
+    <!-- Content Panel -->
+    <main class="flex-1 p-6 flex flex-col justify-between bg-slate-900/40 border border-slate-800/80 rounded-2xl m-4 overflow-hidden panel-glass">
+      <div class="text-center mb-2 shrink-0">
+        <span class="text-[11px] uppercase bg-blue-500/10 border border-blue-500/30 text-blue-400 px-3 py-1 rounded-full font-semibold">10. UNIQUE FEATURE</span>
+        <h2 class="text-2xl font-black text-white mt-1">Talk to Satellite</h2>
+        <p class="text-xs text-slate-400" id="context-subtitle">Autonomous vision-language satellite agent active. Ask anything!</p>
+      </div>
+
+      <!-- Chat Stream Container -->
+      <div id="chat-box" class="flex-1 overflow-y-auto space-y-4 pr-2 my-2 text-xs">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-xl shrink-0">🤖</div>
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 max-w-lg space-y-3">
+            <div class="font-bold text-blue-400">SatQuery AI Satellite Agent</div>
+            <p>Greetings! Ask me about water bodies, rivers, flooding, or urban infrastructure, and I will automatically configure the map layer and zoom directly to the target zone for you.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preset Buttons & Input Box -->
+      <div class="pt-3 border-t border-slate-800 space-y-3 shrink-0">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+          <button onclick="sendPreset('Show water bodies and river basins')" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-2.5 rounded-xl text-left truncate hover:border-blue-500/50 cursor-pointer">🌊 Show water bodies</button>
+          <button onclick="sendPreset('Is there any flooding or water logging?')" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-2.5 rounded-xl text-left truncate hover:border-blue-500/50 cursor-pointer">💧 Is there flooding?</button>
+          <button onclick="sendPreset('How much forest area was lost?')" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-2.5 rounded-xl text-left truncate hover:border-blue-500/50 cursor-pointer">🌿 Vegetation loss</button>
+          <button onclick="sendPreset('Detect new buildings and construction.')" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-2.5 rounded-xl text-left truncate hover:border-blue-500/50 cursor-pointer">🏢 Detect buildings</button>
+        </div>
+        <div class="relative">
+          <input id="chat-input" type="text" placeholder="Ask any question (e.g., show water bodies, flooding, urban area)..." class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-4 pr-12 py-3 text-xs text-slate-200 focus:outline-none focus:border-blue-500" onkeydown="if(event.key==='Enter') sendChat()" />
+          <button onclick="sendChat()" class="absolute right-2.5 top-2.5 p-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs cursor-pointer">➜</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const isCustom = localStorage.getItem("isCustomUpload");
+      const imageName = localStorage.getItem("uploadedImageName");
+      if (isCustom === "true" && imageName) {
+        document.getElementById('context-subtitle').textContent = `Loaded raster: '${imageName}'. Hydro-spatial routing active.`;
+      }
+    });
+
+    async function sendChat() {
+      const inp = document.getElementById('chat-input');
+      const text = inp.value.trim();
+      if(!text) return;
+      processQuery(text);
+      inp.value = '';
+    }
+
+    async function sendPreset(txt) { 
+      processQuery(txt); 
+    }
+
+    async function processQuery(txt) {
+      const box = document.getElementById('chat-box');
+      
+      // Append User Bubble
+      box.innerHTML += `
+        <div class="flex items-start gap-3 justify-end">
+          <div class="bg-slate-900 border border-slate-700 rounded-2xl px-4 py-3 text-xs text-slate-200 max-w-md">${txt}</div>
+          <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white shrink-0">SK</div>
+        </div>
+      `;
+      box.scrollTop = box.scrollHeight;
+
+      // Intelligent Context-Aware Agent Processing with Direct Map State Setting
+      setTimeout(() => {
+        let aiResponse = "Analyzing multispectral satellite telemetry. Spatial indexing confirms high-resolution feature extraction.";
+        let confidence = "94.8%";
+        let buttonText = "📥 View Spatial Bounding on Map";
+        let targetLayer = "truecolor";
+        let targetZoom = "13";
+
+        const lower = txt.toLowerCase();
+        if (lower.includes("water") || lower.includes("flood") || lower.includes("river") || lower.includes("basin") || lower.includes("pond") || lower.includes("lake")) {
+          aiResponse = "Hydro-spatial NDWI radar analysis successfully isolated water bodies, tidal basins, and drainage channels. Zooming in and rendering water layer on map!";
+          confidence = "96.4%";
+          targetLayer = "ndwi";
+          targetZoom = "15"; // Zoom in closer on water bodies
+          buttonText = "🌊 Zoom & View Water Bodies on Map";
+        } else if (lower.includes("forest") || lower.includes("vegetation") || lower.includes("lost") || lower.includes("green")) {
+          aiResponse = "NDVI green canopy index confirms vegetation metrics. Zooming and loading vegetation index layer on map.";
+          confidence = "94.9%";
+          targetLayer = "ndvi";
+          targetZoom = "14";
+          buttonText = "🌿 Zoom & View Vegetation Indices on Map";
+        } else if (lower.includes("building") || lower.includes("construction") || lower.includes("urban") || lower.includes("mumbai")) {
+          aiResponse = "Computer vision object detection isolated structural changes and urban growth zones.";
+          confidence = "95.6%";
+          targetLayer = "truecolor";
+          targetZoom = "14";
+          buttonText = "🏢 Zoom & View Urban Zoning Boxes on Map";
+        } else {
+          aiResponse = `Query processed for: "${txt}". Multispectral signatures mapped successfully.`;
+          confidence = "94.1%";
+          targetLayer = "truecolor";
+          targetZoom = "13";
+          buttonText = "📥 View Spatial Bounding on Map";
+        }
+
+        // Save selected layer and zoom level to localStorage so workspace renders it instantly
+        localStorage.setItem("activeMapLayer", targetLayer);
+        localStorage.setItem("targetZoomLevel", targetZoom);
+
+        box.innerHTML += `
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-xl shrink-0">🤖</div>
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 max-w-lg space-y-2">
+              <div class="font-bold text-blue-400 flex items-center justify-between">
+                <span>SatQuery AI Satellite Agent</span>
+                <span class="text-[10px] text-slate-400">Confidence: ${confidence}</span>
+              </div>
+              <p class="text-slate-200">${aiResponse}</p>
+              <div class="pt-2">
+                <button onclick="window.location.href='workspace.html'" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer shadow-lg">${buttonText}</button>
+              </div>
+            </div>
+          </div>
+        `;
+        box.scrollTop = box.scrollHeight;
+      }, 500);
+    }
+  </script>
+</body>
+</html>
